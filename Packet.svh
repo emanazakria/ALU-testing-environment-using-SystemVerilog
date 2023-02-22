@@ -7,20 +7,21 @@ class Packet;
 	//input signals 
 	rand logic [3:0] 	a			;
 	rand logic [3:0] 	b			;
-	rand logic 			valid_in 	;
-	rand logic 			cin			;
+	rand logic 		valid_in 		;
+	rand logic 		cin			;
 	randc logic [3:0] 	ctl			;
-	//constraint c1 {valid_in==1;}
-	constraint c2 {ctl inside {[0:13]};} //constraint operation within range to avoid negative scenarios  
+	
+	//constraint c1 {valid_in==1;} 		//if we want to avoid negative testing
+	constraint c2 {ctl inside {[0:13]};} 	//constraint operation within range to avoid negative scenarios  
 	
 	//output signals 
-	logic [3:0] 		alu 		;
-	logic 				valid_out 	;
-	logic 				carry 		;
-	logic 				zero 		;
+	logic [3:0] 		alu 			;
+	logic 			valid_out 		;
+	logic 			carry 			;
+	logic 			zero 			;
 	
 	//packet index for debugging
-	int            		pkt_num     ;
+	int            		pkt_num     		;
 
 
 	//function to compare outputs 
