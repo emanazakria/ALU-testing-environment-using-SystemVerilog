@@ -2,28 +2,28 @@
 
 module top;
 	
-	import 		env_pkg::*			;
+	import 		env_pkg::*		;
 	parameter 	clock_cycle = 100 	;
 	logic 		SystemClock 		;
-	logic 		SystemReset			;
+	logic 		SystemReset		;
 
 	// External File Handle
-	int 		fd					;
+	int 		fd			;
 
 
 	alu_if top_if(SystemClock, SystemReset);
 
 	//DUT instatiation
 	alu DUT(
-		 .clk(SystemClock) 				,	 
+		 .clk(SystemClock) 			,	 
 		 .reset(SystemReset)			,
 		 .valid_in(top_if.valid_in)		,
-		 .a(top_if.a)					,	 
-		 .b(top_if.b)					, 
-		 .cin(top_if.cin)				,	 
-		 .ctl(top_if.ctl)				,
-		 .valid_out(top_if.valid_out)	,	 
-		 .alu(top_if.alu)				,
+		 .a(top_if.a)				,	 
+		 .b(top_if.b)				, 
+		 .cin(top_if.cin)			,	 
+		 .ctl(top_if.ctl)			,
+		 .valid_out(top_if.valid_out)		,	 
+		 .alu(top_if.alu)			,
 		 .carry(top_if.carry)			,	 
 		 .zero(top_if.zero)
 			);
@@ -39,9 +39,9 @@ module top;
 
 
 	initial begin
-		fd = $fopen ("./bugs.txt", "w");
-		t_env = new(top_if, fd); 	// create test environment
-		t_env.run (); 				// start things running
+		fd = $fopen ("./bugs.txt", "w")	;
+		t_env = new(top_if, fd)		; 	// create test environment
+		t_env.run ()			;	// start things running
 	end
 	
 endmodule
