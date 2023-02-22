@@ -14,12 +14,12 @@ class Scoreboard;
 	//INDEX TO ORDER BUGS FOUND
 	int bug_num 	= 1	;
 	int ERROR_FLAG 	= 0	;
-	int fd				;
+	int fd			;
 
 	function new(mailbox log_mon, mailbox log_stim, int fd);
 		this.log_mon  	= log_mon	;
 		this.log_stim 	= log_stim	;
-		this.fd 		= fd		;
+		this.fd 	= fd		;
 	endfunction
   
   
@@ -33,15 +33,15 @@ class Scoreboard;
         case (pkt_stim.ctl)
 
           4'b0000: 
-					pkt_stim.alu = pkt_stim.b;  //Select data on port B
+					pkt_stim.alu = pkt_stim.b;  					//Select data on port B
           4'b0001:
-					{pkt_stim.carry, pkt_stim.alu} = pkt_stim.b + 4'b0001;  //Increment data on port B 
+					{pkt_stim.carry, pkt_stim.alu} = pkt_stim.b + 4'b0001;  	//Increment data on port B 
           4'b0010:
-					{pkt_stim.carry, pkt_stim.alu} = pkt_stim.b - 4'b0001;  //Decrement data on port B 
+					{pkt_stim.carry, pkt_stim.alu} = pkt_stim.b - 4'b0001;  	//Decrement data on port B 
           4'b0011: 
-					{pkt_stim.carry, pkt_stim.alu} = pkt_stim.a + pkt_stim.b;  //ADD without CARRY 
+					{pkt_stim.carry, pkt_stim.alu} = pkt_stim.a + pkt_stim.b;  	//ADD without CARRY 
           4'b0100:
-					{pkt_stim.carry,pkt_stim.alu}=pkt_stim.a+pkt_stim.b+pkt_stim.cin; 		//ADD with CARRY 
+					{pkt_stim.carry,pkt_stim.alu}=pkt_stim.a+pkt_stim.b+pkt_stim.cin; //ADD with CARRY 
           4'b0101: begin
 					pkt_stim.alu   = pkt_stim.a - pkt_stim.b;
 					pkt_stim.carry = (pkt_stim.a < pkt_stim.b) ? 1'b1 : 1'b0;
@@ -54,32 +54,32 @@ class Scoreboard;
 						pkt_stim.carry = 1'b1;
 					end  //SUB with BORROW 
           4'b0111: 
-					pkt_stim.alu = pkt_stim.a & pkt_stim.b;  //AND 
+					pkt_stim.alu 	= pkt_stim.a & pkt_stim.b;  //AND 
           4'b1000: 
-					pkt_stim.alu = pkt_stim.a | pkt_stim.b;  //OR 
+					pkt_stim.alu 	= pkt_stim.a | pkt_stim.b;  //OR 
           4'b1001: 
-					pkt_stim.alu = pkt_stim.a ^ pkt_stim.b;  //XOR 
+					pkt_stim.alu 	= pkt_stim.a ^ pkt_stim.b;  //XOR 
           4'b1010: begin
-					pkt_stim.alu   = {pkt_stim.b << 1};  //Shift Left 
-					pkt_stim.carry = pkt_stim.b[3];
+					pkt_stim.alu   	= {pkt_stim.b << 1};  	//Shift Left 
+					pkt_stim.carry 	= pkt_stim.b[3];
 				end
           4'b1011: begin
-					pkt_stim.alu   = {1'b0, pkt_stim.b[3:1]};
-					pkt_stim.carry = pkt_stim.b[0];
+					pkt_stim.alu   	= {1'b0, pkt_stim.b[3:1]};
+					pkt_stim.carry 	= pkt_stim.b[0];
 				end  //Shift Right 
           4'b1100: begin
-					pkt_stim.alu   = {pkt_stim.b[2:0], pkt_stim.cin};
-					pkt_stim.carry = pkt_stim.b[3];
+					pkt_stim.alu   	= {pkt_stim.b[2:0], pkt_stim.cin};
+					pkt_stim.carry 	= pkt_stim.b[3];
 				end  //Rotate Left 
           4'b1101: begin
-					pkt_stim.alu   = {pkt_stim.cin, pkt_stim.b[3:1]};
-					pkt_stim.carry = pkt_stim.b[0];  //Rotate Right 
+					pkt_stim.alu   	= {pkt_stim.cin, pkt_stim.b[3:1]};
+					pkt_stim.carry 	= pkt_stim.b[0];  //Rotate Right 
 				end
           default: begin
-					pkt_stim.alu 	= 4'bxxxx	;
-					pkt_stim.carry 	= 1'bx		;
-					pkt_stim.zero 	= 1'bx		;
-					$display("SCOREBOARD ILLEGAL CASE!");
+					pkt_stim.alu 	= 4'bxxxx		;
+					pkt_stim.carry 	= 1'bx			;
+					pkt_stim.zero 	= 1'bx			;
+					$display("SCOREBOARD ILLEGAL CASE!")	;
 				end
         endcase
 
@@ -93,7 +93,7 @@ class Scoreboard;
 			pkt_stim.carry 		= 1'bz				;
 			pkt_stim.zero 		= 1'bz				;	
 			$display("INPUT NOT VALID")				;
-			$fdisplay (fd, "INPUT NOT VALID    :") 	;
+			$fdisplay (fd, "INPUT NOT VALID    :") 			;
 		end
 	endfunction
 	
@@ -108,29 +108,29 @@ class Scoreboard;
 				
 				if (pkt_mon.alu !== pkt_stim.alu)
 					begin
-						ERROR_FLAG  =  1                 		;
-						$display  ("RESULT ERROR     :") 		;
+						ERROR_FLAG  =  1                 	;
+						$display  ("RESULT ERROR     :") 	;
 						$fdisplay (fd, "RESULT ERROR     :") 	;
 					end
 					
 				if (pkt_mon.carry !== pkt_stim.carry) 
 					begin
-						ERROR_FLAG  =  1                 		;
-						$display  ("CARRY FLAG ERROR :") 		;
+						ERROR_FLAG  =  1                 	;
+						$display  ("CARRY FLAG ERROR :") 	;
 						$fdisplay (fd, "CARRY FLAG ERROR :")	;
 					end
 					
 				if (pkt_mon.zero !== pkt_stim.zero)
 					begin
-						ERROR_FLAG  =  1                 		;
-						$display  ("ZERO FLAG ERROR  :") 		;
+						ERROR_FLAG  =  1                 	;
+						$display  ("ZERO FLAG ERROR  :") 	;
 						$fdisplay (fd, "ZERO FLAG ERROR  :") 	;
 					end
 					
 				if (pkt_mon.valid_out !== pkt_stim.valid_out) 
 					begin
-						ERROR_FLAG  =  1                 		;
-						$display  ("VALID_OUT ERROR  :") 		;
+						ERROR_FLAG  =  1                 	;
+						$display  ("VALID_OUT ERROR  :") 	;
 						$fdisplay (fd, "VALID_OUT ERROR  :") 	;
 					end 
 					
@@ -150,15 +150,15 @@ class Scoreboard;
 	task sb_task;
 		forever begin
 
-			pkt_mon  = new();
-			pkt_stim = new();
+			pkt_mon  = new()	;
+			pkt_stim = new()	;
 
 			//get packets from generator and monitor 
-			log_mon.get(pkt_mon);
-			log_stim.get(pkt_stim);  
+			log_mon.get(pkt_mon)	;
+			log_stim.get(pkt_stim)	;	  
 
 			//function to do the desired operation on the stim packet 
-			refmodel(pkt_stim);
+			refmodel(pkt_stim)	;
 			
 			//for debugging
 			$display("packet_mon = %p" , pkt_mon ) ;
