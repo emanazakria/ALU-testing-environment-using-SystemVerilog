@@ -27,9 +27,9 @@ class Packet;
 	//function to compare outputs 
 	function int compare_outputs(Packet pkt_stim , Packet pkt_mon);
 		if (pkt_mon.alu === pkt_stim.alu && pkt_mon.carry === pkt_stim.carry && pkt_mon.zero === pkt_stim.zero && pkt_stim.valid_out === pkt_mon.valid_out) 
-				return 1;
+				return 1		;
 		else
-				return 0;
+				return 0		;
 	endfunction     
 
 
